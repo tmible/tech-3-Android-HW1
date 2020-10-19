@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-
 class NumbersRVAdapter(
-    private val numbers: ArrayList<Int>,
+    private val numbers: MutableList<Int>,
     private val cellClickListener: CellClickListener
 ) : RecyclerView.Adapter<NumbersRVViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumbersRVViewHolder {

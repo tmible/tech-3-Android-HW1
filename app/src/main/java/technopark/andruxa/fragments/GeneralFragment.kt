@@ -1,9 +1,7 @@
 package technopark.andruxa.fragments
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,24 +13,15 @@ import technopark.andruxa.MainActivity
 import technopark.andruxa.NumbersRVAdapter
 import technopark.andruxa.R
 
-
 class GeneralFragment : Fragment(), CellClickListener {
 
     private val RANGE_KEY: String = "range"
-    var numbersSize: Int? = null
+    private var numbersSize: Int? = null
+    private val PORT_COLUMNS_NUMBER: Int = 3
+    private val LAND_COLUMNS_NUMBER: Int = 4
 
     companion object {
         fun newInstance(): GeneralFragment = GeneralFragment()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d(getLogTag(), "onAttach")
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(getLogTag(), "onCreate")
     }
 
     override fun onCreateView(
@@ -40,22 +29,23 @@ class GeneralFragment : Fragment(), CellClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(getLogTag(), "onCreateView")
         return inflater.inflate(R.layout.general_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d(getLogTag(), "onActivityCreated")
         this.numbersSize = savedInstanceState?.getInt(RANGE_KEY)
         if (this.numbersSize == null) {
-            Log.d(getLogTag(), (activity as MainActivity).savedRange.toString())
             this.numbersSize = (activity as MainActivity).savedRange
         }
-        val defaultAmount = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 3
+        val defaultAmount =
+            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                LAND_COLUMNS_NUMBER
+            } else {
+                PORT_COLUMNS_NUMBER
+            }
         numbersRV.layoutManager = GridLayoutManager(activity, defaultAmount)
-        val numbers: ArrayList<Int> = ArrayList()
-        Log.d(getLogTag(), this.numbersSize.toString())
+        val numbers: MutableList<Int> = mutableListOf()
         if (this.numbersSize != null) {
             for (i in 1..this.numbersSize!!) numbers.add(i)
         } else {
@@ -72,62 +62,14 @@ class GeneralFragment : Fragment(), CellClickListener {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.d(getLogTag(), "onViewCreated")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(getLogTag(), "onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(getLogTag(), "onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(getLogTag(), "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(getLogTag(), "onStop")
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(getLogTag(), "onDestroyView")
         (activity as MainActivity).savedRange = this.numbersSize
-        Log.d(getLogTag(), this.numbersSize.toString())
-        Log.d(getLogTag(), (activity as MainActivity).savedRange.toString())
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(getLogTag(), "onDestroy")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d(getLogTag(), "onDetach")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d(getLogTag(), "onSaveInstanceState")
         outState.putInt(RANGE_KEY, this.numbersSize!!)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        Log.d(getLogTag(), "onViewStateRestored")
-    }
-
-    private fun getLogTag(): String? {
-        return javaClass.simpleName
     }
 
     override fun onCellClickListener(number: String, color: Int) {
