@@ -13,7 +13,11 @@ class NumbersRVAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumbersRVViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.number_cell, parent, false)
-        return NumbersRVViewHolder(view)
+        val holder = NumbersRVViewHolder(view)
+        holder.number.setOnClickListener {
+            this.cellClickListener.onCellClickListener(holder.number.text as String, holder.number.currentTextColor)
+        }
+        return holder
     }
 
     override fun getItemCount(): Int {
@@ -23,8 +27,5 @@ class NumbersRVAdapter(
     override fun onBindViewHolder(holder: NumbersRVViewHolder, position: Int) {
         holder.number.text = this.numbers[position].toString()
         holder.number.setTextColor(if (this.numbers[position] % 2 == 0) Color.RED else Color.BLUE)
-        holder.number.setOnClickListener {
-            this.cellClickListener.onCellClickListener(holder.number.text as String, holder.number.currentTextColor)
-        }
     }
 }

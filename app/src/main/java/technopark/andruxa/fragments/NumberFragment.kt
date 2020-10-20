@@ -33,15 +33,13 @@ class NumberFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (arguments != null) {
-            big_number.text = arguments!!.getString(NUMBER_KEY).toString()
-            big_number.setTextColor(arguments!!.getInt(COLOR_KEY))
+        this.arguments?.let { it ->
+            big_number.text = it.getString(NUMBER_KEY).toString()
+            big_number.setTextColor(it.getInt(COLOR_KEY))
         }
-        if (savedInstanceState?.getString(NUMBER_KEY) != null) {
-            big_number.text = savedInstanceState.getString(NUMBER_KEY).toString()
-        }
-        if (savedInstanceState?.getInt(COLOR_KEY) != null) {
-            big_number.setTextColor(savedInstanceState.getInt(COLOR_KEY))
+        savedInstanceState?.let { notNullSavedInstanceState ->
+            notNullSavedInstanceState.getString(NUMBER_KEY)?.let { big_number.text = it }
+            big_number.setTextColor(notNullSavedInstanceState.getInt(COLOR_KEY))
         }
     }
 

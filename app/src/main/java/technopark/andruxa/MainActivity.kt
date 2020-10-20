@@ -6,8 +6,11 @@ import technopark.andruxa.fragments.GeneralFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private val SAVED_RANGE_KEY: String = "saved_range"
     var savedRange: Int? = null
+
+    companion object {
+        private const val SAVED_RANGE_KEY: String = "saved_range"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(SAVED_RANGE_KEY, this.savedRange!!)
+        this.savedRange?.let { outState.putInt(SAVED_RANGE_KEY, it) }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

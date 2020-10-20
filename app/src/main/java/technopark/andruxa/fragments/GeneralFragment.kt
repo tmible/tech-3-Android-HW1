@@ -15,12 +15,12 @@ import technopark.andruxa.R
 
 class GeneralFragment : Fragment(), CellClickListener {
 
-    private val RANGE_KEY: String = "range"
     private var numbersSize: Int? = null
-    private val PORT_COLUMNS_NUMBER: Int = 3
-    private val LAND_COLUMNS_NUMBER: Int = 4
 
     companion object {
+        private const val RANGE_KEY: String = "range"
+        private const val PORT_COLUMNS_NUMBER: Int = 3
+        private const val LAND_COLUMNS_NUMBER: Int = 4
         fun newInstance(): GeneralFragment = GeneralFragment()
     }
 
@@ -38,7 +38,7 @@ class GeneralFragment : Fragment(), CellClickListener {
         if (this.numbersSize == null) {
             this.numbersSize = (activity as MainActivity).savedRange
         }
-        val defaultAmount =
+        val defaultAmount: Int =
             if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 LAND_COLUMNS_NUMBER
             } else {
@@ -46,9 +46,8 @@ class GeneralFragment : Fragment(), CellClickListener {
             }
         numbersRV.layoutManager = GridLayoutManager(activity, defaultAmount)
         val numbers: MutableList<Int> = mutableListOf()
-        if (this.numbersSize != null) {
-            for (i in 1..this.numbersSize!!) numbers.add(i)
-        } else {
+        this.numbersSize?.let { for (i in 1..it) numbers.add(i) }
+        if (numbers.size == 0) {
             for (i in 1..defaultAmount) numbers.add(i)
             this.numbersSize = defaultAmount
         }
@@ -69,7 +68,7 @@ class GeneralFragment : Fragment(), CellClickListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(RANGE_KEY, this.numbersSize!!)
+        this.numbersSize?.let { outState.putInt(RANGE_KEY, it) }
     }
 
     override fun onCellClickListener(number: String, color: Int) {
